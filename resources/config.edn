@@ -8,4 +8,6 @@
                                        #ref [:prefix]
                                        "/callback"]}
  :oauth #merge [#ref [:secrets :oauth]
-                #ref [:oauth-defaults]]}
+                #ref [:oauth-defaults]]
+ :api {:users "https://bardcollege.brightspace.com/d2l/api/lp/1.23/users/"}}
+

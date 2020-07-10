@@ -46,6 +46,12 @@
            (let [res (oauth/complete-auth auth-handler code state)]
              (pprint res)
              (found "/")))
+
+      (GET "/refresh" []
+           (let [tok (oauth/refresh auth-handler)]
+             (println tok)
+             (ok tok)))
+
       (POST "/user" []
             :body-params [eduPersonPrincipalName
                           givenName

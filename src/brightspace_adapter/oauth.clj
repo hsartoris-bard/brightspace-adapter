@@ -82,7 +82,7 @@
                   :basic-auth [client-id client-secret]}]
       (->> (post->json token-uri params)
            (update-state this)
-           (get :access_token))))
+           :access_token)))
 
   (access-token [this]
     (cond

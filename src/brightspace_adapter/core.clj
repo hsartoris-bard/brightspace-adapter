@@ -10,7 +10,7 @@
   (:gen-class))
 
 (def debug true)
-(def profile :dev)
+(def profile :prod)
 
 ; read configuration from resources/config.edn
 ; by using clojure.java.io/resource we also can retrieve from classpath

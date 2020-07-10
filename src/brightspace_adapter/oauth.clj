@@ -68,6 +68,7 @@
     (if (not= csrf (:csrf @state))
       (throw (Exception. "CSRF tokens don't match!"))
       (let [params {:form-params {:code code
+                                  :scope scope
                                   :grant_type "authorization_code"
                                   :redirect_uri redirect-uri}
                     :basic-auth [client-id client-secret]}]

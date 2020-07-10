@@ -10,11 +10,13 @@
                  [aero "1.1.6"]
                  [ring/ring-jetty-adapter "1.7.0"]]
   :plugins [[lein-ring "0.12.5"]]
-  :ring {:handler brightspace-adapter.core/app
-         :adapter {:ssl? true
-                   :ssl-port 8443
-                   :keystore "selfsigned.jks"
-                   :key-password "changeit"}}
+
   :main ^:skip-aot brightspace-adapter.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}
+             :dev {:ring {:handler brightspace-adapter.core/app
+                          :adapter {:ssl? true
+                                    :ssl-port 8443
+                                    :keystore "selfsigned.jks"
+                                    :key-password "changeit"}}}
+             :prod {:ring {:handler brightspace-adapter.core/app}}})

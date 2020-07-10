@@ -11,7 +11,6 @@
 
 (def debug true)
 
-
 ; read configuration from resources/config.edn
 ; by using clojure.java.io/resource we also can retrieve from classpath
 (def config (-> (clojure.java.io/resource "config.edn")
@@ -37,36 +36,38 @@
           first))))
 
 (def app
-  (api
-    (GET "/" [] (found (:prefix config)))
-    (context 
-      (:prefix config) []
-      (GET "/callback" []
-           :query-params [code state]
-           (let [res (oauth/complete-auth auth-handler code state)]
-             (pprint res)
-             (found "/")))
+  (let [{prefix :prefix} config]
+    (api
+      (GET "/" [] (found prefix))
+      (context 
+        prefix []
+        (GET "/callback" []
+             :query-params [code state]
+             (let [res (oauth/complete-auth auth-handler code state)]
+               (pprint res)
+               (found (str prefix "/setup"))))
 
-      (GET "/refresh" []
-           (let [tok (oauth/refresh auth-handler)]
-             (println tok)
-             (ok tok)))
+        (GET "/status" []
+             (if (not (oauth/auth-completed? auth-handler))
+               (found (oauth/gen-auth-uri auth-handler))
+               (ok (get-user "901377171@bard.edu"))))
 
-      (POST "/user" []
-            :body-params [eduPersonPrincipalName
-                          givenName
-                          mail
-                          sn
-                          cn]
-            (if-let [user (get-user eduPersonPrincipalName)]
-              (ok user)
-              "User doesn't exist yet!"))
+        (POST "/user" []
+              :body-params [eduPersonPrincipalName
+                            givenName
+                            mail
+                            sn
+                            cn]
+              (if-let [user (get-user eduPersonPrincipalName)]
+                (ok user)
+                "User doesn't exist yet!")) ; TODO
 
-      (GET "/:id" []
-           :path-params [id]
-           (ok (get-user id)))
+        (GET "/refresh" []
+             (let [tok (oauth/refresh auth-handler)]
+               (println tok)
+               (ok tok)))
 
-      (GET "/" []
-           (if (not (oauth/auth-completed? auth-handler))
-             (found (oauth/gen-auth-uri auth-handler))
-             (ok (get-user "901377171@bard.edu")))))))
+        (GET "/:id" []
+             :path-params [id]
+             (ok (get-user id)))))))
+

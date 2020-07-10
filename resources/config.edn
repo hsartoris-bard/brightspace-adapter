@@ -1,13 +1,13 @@
 {:secrets #include #join [#env PWD "/.secrets.edn"]
  :prefix "/brightspace"
- :base-url #profile {:dev "https://localhost:8443"}
+ :base-url #profile {:dev "https://localhost:8443"
+                     :prod "https://cas02.bard.edu"}
  :oauth-defaults {:authorize-uri "https://auth.brightspace.com/oauth2/auth"
                   :token-uri     "https://auth.brightspace.com/core/connect/token"
-                  :scope         "users:userdata:create,read"
+                  :scope         "users:userdata:create users:userdata:read core:*:*"
                   :redirect-uri  #join [#ref [:base-url]
                                        #ref [:prefix]
                                        "/callback"]}
  :oauth #merge [#ref [:secrets :oauth]
                 #ref [:oauth-defaults]]
  :api {:users "https://bardcollege.brightspace.com/d2l/api/lp/1.23/users/"}}
-

@@ -1,0 +1,11 @@
+{
+	"FirstName": "Bart",
+	"SendCreationEmail": false,
+	"ExternalEmail": "bc8888@bard.edu",
+	"LastName": "Collenge",
+	"UserName": "bc8888",
+	"IsActive": true,
+	"MiddleName": null,
+	"OrgDefinedId": "901888888@bard.edu",
+	"RoleId": 110
+}

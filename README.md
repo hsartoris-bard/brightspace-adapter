@@ -1,16 +1,55 @@
 # brightspace-adapter
 
-FIXME: description
 
 ## Installation
 
-Download from http://example.com/FIXME.
+You'll need [Leiningen](https://leiningen.org/).
+
+### Build an executable JAR:
+```bash
+# prod profile:
+lein with-profile prod ring uberjar
+# no profile:
+lein ring uberjar
+```
+Outputs to target/uberjar/brightspace-adapter-0.1.0-standalone.jar
+
+### Running the JAR
+You'll need a config file, `.secrets.edn`, containing the client ID and secret
+to be present in the directory you run it from. Client ID and secret can be 
+obtained from Brightspace -> settings wheel -> Manage Extensibility -> OAuth2.0
+
+Other configuration options can be set before build time in 
+`resources/config.edn`.
+#### `.secrets.edn`
+```edn
+{:oauth {:client-id "<client-id>"
+         :client-secret "<client-secret>"}}
+```
+
+
 
 ## Usage
+### Running a dev server
+```bash
+lein ring server-headless
+```
+When you make a request and code has changed on disk, it will be reloaded in
+this mode.
 
-FIXME: explanation
+### Setting up your tokens
+Go to the HTTPS endpoint of the local server, prefix /brightspace/setup
+This will send you to Brightspace to approve the requested API access. You'll
+return, assuming the redirect URLs are set appropriately, and the resulting
+access/refresh tokens will be saved. You should see a page that says something
+like "You're all set".
 
-    $ java -jar brightspace-adapter-0.1.0-standalone.jar [args]
+### Using it
+Post a request to /brightspace/user with JSON body containing the parameters
+defined on the POST endpoing in core.clj. The application will check with 
+Brightspace to determine whether or not the user exists; if so, it does
+nothing. If not, it will use the provided attributes to create a new user.
+
 
 ## Options
 

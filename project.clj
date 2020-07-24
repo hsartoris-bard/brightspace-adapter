@@ -8,6 +8,7 @@
                  [clj-http "3.10.1"]
                  [metosin/compojure-api "2.0.0-alpha31"]
                  [aero "1.1.6"]
+                 [puppetlabs/clj-ldap "0.3.0"]
                  [ring/ring-jetty-adapter "1.7.0"]]
   :plugins [[lein-ring "0.12.5"]]
 
